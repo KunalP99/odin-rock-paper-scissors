@@ -21,22 +21,51 @@ const playRound = (playerSelection, computerSelection) => {
     // Make every player selection uppercase to avoid errors
     let caseInsensitive = playerSelection.toUpperCase();
     if (caseInsensitive == computerSelection) {
-        return `It's a tie! You both chose ${computerSelection}.`;
-    } else if (caseInsensitive === "ROCK" && computerSelection === "PAPER") {
-        return `You Lose! PAPER beats ROCK.`;
-    } else if (caseInsensitive === "ROCK" && computerSelection === "SCISSORS") {
-        return `You Win! ROCK beats SCISSORS.`;
-    } else if (caseInsensitive === "PAPER" && computerSelection === "SCISSORS") {
-        return `You Lose! SCISSORS beats PAPER.`;
-    } else if (caseInsensitive === "SCISSORS" && computerSelection === "PAPER") {
-        return `You Win! SCISSORS beats PAPER.`;
-    }
+        return `TIE`;
+    } else if (caseInsensitive === "ROCK" && computerSelection === "SCISSORS" || caseInsensitive === "SCISSORS" && computerSelection === "PAPER" || caseInsensitive === "PAPER" && computerSelection === "ROCK" ) {
+        return `WIN`;
+    } else if (caseInsensitive === "PAPER" && computerSelection === "SCISSORS" || caseInsensitive === "ROCK" && computerSelection === "PAPER" || caseInsensitive === "SCISSORS" && computerSelection === "ROCK") {
+        return `LOSE`;
+    } 
 }; 
 
 const game = () => {
+    let playerPoints = 0;
+    let computerPoints = 0;
+
+    let playerSelection = prompt("Type Rock, Paper or Scissors:").toUpperCase();
     
+    // Plays 5 rounds and increments points based on result
+    for (let i = 0; i < 5; i++) {
+        const computerSelection = computerPlay();
+
+        if (playRound(playerSelection, computerSelection) === "WIN") {
+            playerPoints++;
+            console.log(`You Win! ${playerSelection} beats ${computerSelection}`);
+            console.log(`Player points: ${playerPoints} ... Computer points: ${computerPoints}`);
+        } else if (playRound(playerSelection, computerSelection) === "LOSE") {
+            computerPoints++;
+            console.log(`You Lose! ${computerSelection} beats ${playerSelection}`);
+            console.log(`Player points: ${playerPoints} ... Computer points: ${computerPoints}`);
+        } else if (playRound(playerSelection, computerSelection) === "TIE") {
+            console.log(`It's a tie! You both chose ${computerSelection}`);
+            console.log(`Player points: ${playerPoints} ... Computer points: ${computerPoints}`);
+        } else {
+            console.log(`You typed ${playerSelection}. Please type ROCK, PAPER or SCISSORS.`);
+        }
+
+        playerSelection = prompt("Type Rock, Paper or Scissors:").toUpperCase();
+    }
+    if (playerPoints > computerPoints) {
+        console.log(`You scored ${playerPoints}. Computer scored ${computerPoints}.`);
+        return `YOU WIN!`;
+    } else if (playerPoints < computerPoints) {
+        console.log(`You scored ${playerPoints}. Computer scored ${computerPoints}.`)
+        return `YOU LOSE!`;
+    } else {
+        console.log(`You scored ${playerPoints}. Computer scored ${computerPoints}.`)
+        return `YOU TIED!`;
+    }
 };
 
-const playerSelection = "rock";
-const computerSelection = computerPlay();
-console.log(playRound(playerSelection, computerSelection));
+console.log(game());
